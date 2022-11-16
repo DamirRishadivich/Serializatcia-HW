@@ -17,11 +17,12 @@ public class Main {
 //                basket.addToCart(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 //            }
 //        }
-        basket.addToCart(1,67);
-        basket.addToCart(2,45);
-        basket.addToCart(3,14);
-        basket.saveTxt(new File("Save.txt"));
-        Basket basket1 = Basket.loadFromTxtFile(new File("Save.txt"));
+//        basket.addToCart(1,67);
+//        basket.addToCart(2,45);
+//        basket.addToCart(3,14);
+//        basket.saveBin(new File("Save.bin"));
+
+        Basket basket1 = Basket.loadFromBinFile(new File("Save.bin"));
         basket1.printCart();
     }
 }

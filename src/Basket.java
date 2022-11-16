@@ -1,11 +1,11 @@
 import java.io.*;
 import java.util.Arrays;
 
-public class Basket {
+public class Basket implements Serializable {
     protected String[] product;
     protected int[] price;
     protected int[] basketCount;
-
+    private static final long serialVersionUID = 1L;
 
     public String[] getProduct() {
         return product;
@@ -60,7 +60,7 @@ public class Basket {
         }
     }
 
-    static Basket loadFromTxtFile(File textFile) {
+    public static Basket loadFromTxtFile(File textFile) {
         try (BufferedReader br = new BufferedReader(new FileReader("Save.txt"))) {
             String[] product = br.readLine().split(" ");
             String[] stringPrice = br.readLine().split(" ");
@@ -84,4 +84,26 @@ public class Basket {
         }
         return null;
     }
+
+    public void saveBin(File file) {
+        try (FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream cos = new ObjectOutputStream(fos)) {
+            cos.writeObject(this);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public static Basket loadFromBinFile(File file) {
+        Basket basket = null;
+        try (FileInputStream fis = new FileInputStream(file);
+        ObjectInputStream ois = new ObjectInputStream(fis)) {
+            basket = (Basket) ois.readObject();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return basket;
+    }
+
+
 }
