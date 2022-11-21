@@ -18,11 +18,11 @@ public class Main {
 //                clientLog.log(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 //            }
 //        }
+
 //        clientLog.exportAsCSV(new File("log.csv"));
+//        basket.saveJSON(new File("basket.json"));
 
-//        basket.saveJSON(new File("SaveJSON"));
-
-        Basket basket = Basket.loadFromJSON(new File("SaveJSON"));
+        Basket basket = Basket.loadFromJSON(new File("basket.json"));
         basket.printCart();
 
 
