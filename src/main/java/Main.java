@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Basket basket = new Basket(new String[]{"Хлеб","Молоко","Масло"}, new int[]{30,60,90});
-
+//        Basket basket = new Basket(new String[]{"Хлеб","Молоко","Масло"}, new int[]{30,60,90});
+//        ClientLog clientLog = new ClientLog();
 //        while(true) {
 //            System.out.println("Введите товар и количество или введите \"end\"");
 //            Scanner scanner = new Scanner(System.in);
@@ -15,13 +15,16 @@ public class Main {
 //            } else {
 //                String[] parts = input.split(" ");
 //                basket.addToCart(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+//                clientLog.log(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 //            }
 //        }
-        basket.addToCart(1,67);
-        basket.addToCart(2,45);
-        basket.addToCart(3,14);
-        basket.saveTxt(new File("Save.txt"));
-        Basket basket1 = Basket.loadFromTxtFile(new File("Save.txt"));
-        basket1.printCart();
+//        clientLog.exportAsCSV(new File("log.csv"));
+
+//        basket.saveJSON(new File("SaveJSON"));
+
+        Basket basket = Basket.loadFromJSON(new File("SaveJSON"));
+        basket.printCart();
+
+
     }
 }
