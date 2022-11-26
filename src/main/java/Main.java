@@ -1,30 +1,73 @@
+import au.com.bytecode.opencsv.CSVWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import test.java.ShopXML;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-//        Basket basket = new Basket(new String[]{"Хлеб","Молоко","Масло"}, new int[]{30,60,90});
-//        ClientLog clientLog = new ClientLog();
-//        while(true) {
-//            System.out.println("Введите товар и количество или введите \"end\"");
-//            Scanner scanner = new Scanner(System.in);
-//            String input = scanner.nextLine();
-//            if (input.equals("end")) {
-//                basket.printCart();
-//                break;
-//            } else {
-//                String[] parts = input.split(" ");
-//                basket.addToCart(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-//                clientLog.log(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-//            }
-//        }
+    public static void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        Basket basket;
+        String[] product = {"Хлеб","Молоко","Масло"};
+        int[] price = {20,40,60};
+        File file;
+        ClientLog clientLog = new ClientLog();
+        // Проверка первого блока load. Если enabled, то загружаем сохраненную корзину, если нет, то создаем пустую.
+        ShopXML load = new ShopXML("load");
+        if (load.getEnable()) {
+            file = new File(load.getFileName());
+            basket = (load.getFileFormat().equals("json")) ? Basket.loadFromJSON(file) : Basket.loadFromTxtFile(file);
+        } else {
+            basket = new Basket(product,price);
+        }
+        //Второй блок, пользовательский ввод, сохранение и логи
 
-//        clientLog.exportAsCSV(new File("log.csv"));
-//        basket.saveJSON(new File("basket.json"));
+        while (true) {
+            System.out.println("Введите товар и количество или введите \"end\" ");
+            String input = scanner.nextLine();
+            if (input.equals("end")) {
+                basket.printCart();
+                break;
+            } else {
+                String[] parts = input.split(" ");
+                basket.addToCart(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+                clientLog.log(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+            }
+        }
 
-        Basket basket = Basket.loadFromJSON(new File("basket.json"));
-        basket.printCart();
+        ShopXML save = new ShopXML("save");
+        if (save.getEnable()) {
+            file = new File(save.getFileName());
+            if (save.getFileFormat().equals("json")) {
+                basket.saveJSON(file);
+            } else {
+                basket.saveTxt(file);
+            }
+        }
 
+        ShopXML logXML = new ShopXML("log");
+        if (logXML.getEnable()) {
+            File logFile = new File(logXML.getFileName());
+            // Проверяем существует ли файл log.csv
+            if (!logFile.exists()) {
+                // если лог-файл не существует, то создаем его и передаем первую строку с заголовками
+                String[] head = {"productNum", "amount"};
+                try (CSVWriter writer = new CSVWriter(new FileWriter(logFile))) {
+                    writer.writeNext(head);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            clientLog.exportAsCSV(new File(logXML.getFileName()));
+        }
 
     }
 }

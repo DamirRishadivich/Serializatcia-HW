@@ -1,11 +1,13 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.Arrays;
 
 public class Basket {
     protected String[] product;
@@ -26,25 +28,26 @@ public class Basket {
     }
 
     public Basket(String[] product, int[] price) {
-        this.product = product;
-        this.price = price;
-        basketCount = new int[product.length];
+            this.product = product;
+            this.price = price;
+            basketCount = new int[product.length];
     }
+    public Basket(){}
 
     public void addToCart(int productNum, int amount) {
         basketCount[productNum - 1] += amount;
     }
 
-    public void printCart() {
-        int sum = 0;
-        for (int i = 0; i < product.length; i++) {
-            sum += price[i] * basketCount[i];
-        }
-        System.out.println("Ваша корзина: ");
-        for (int i = 0; i < product.length; i++) {
-            System.out.println(product[i] + " " + price[i] + " руб/шт. " + "Количество: " + basketCount[i] + " шт. Стоимость: " + basketCount[i] * price[i]);
-        }
-        System.out.println("Общая стоимость корзины: " + sum);
+    public void printCart() throws Exception {
+            int sum = 0;
+            for (int i = 0; i < product.length; i++) {
+                sum += price[i] * basketCount[i];
+            }
+            System.out.println("Ваша корзина: ");
+            for (int i = 0; i < product.length; i++) {
+                System.out.println(product[i] + " " + price[i] + " руб/шт. " + "Количество: " + basketCount[i] + " шт. Стоимость: " + basketCount[i] * price[i]);
+            }
+            System.out.println("Общая стоимость корзины: " + sum);
     }
 
     public void saveTxt(File textFile) {
@@ -115,5 +118,4 @@ public class Basket {
         }
         return null;
     }
-
 }
