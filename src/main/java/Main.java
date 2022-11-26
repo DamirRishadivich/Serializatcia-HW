@@ -1,12 +1,5 @@
 import au.com.bytecode.opencsv.CSVWriter;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import test.java.ShopXML;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,9 +49,7 @@ public class Main {
         ShopXML logXML = new ShopXML("log");
         if (logXML.getEnable()) {
             File logFile = new File(logXML.getFileName());
-            // Проверяем существует ли файл log.csv
             if (!logFile.exists()) {
-                // если лог-файл не существует, то создаем его и передаем первую строку с заголовками
                 String[] head = {"productNum", "amount"};
                 try (CSVWriter writer = new CSVWriter(new FileWriter(logFile))) {
                     writer.writeNext(head);
