@@ -61,7 +61,7 @@ public class Basket {
     }
 
     static Basket loadFromTxtFile(File textFile) {
-        try (BufferedReader br = new BufferedReader(new FileReader("Save.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(textFile))) {
             String[] product = br.readLine().split(" ");
             String[] stringPrice = br.readLine().split(" ");
             String[] stringBasketCount = br.readLine().split(" ");
@@ -79,8 +79,10 @@ public class Basket {
             Basket basket = new Basket(product,price);
             basket.basketCount = basketCount;
             return basket;
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
         return null;
     }
